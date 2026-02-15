@@ -37,7 +37,7 @@ const { useState, useEffect, useRef, useCallback } = React;
 // ─── Firebase Config ──────────────────────────────────────
 const firebaseConfig = {
   apiKey: "AIzaSyAfS0nruJKp7H5WbJmYfvbtGACxn7VTBzg",
-  authDomain: "praxis-644cd.firebaseapp.com",
+  authDomain: "chaddtomy2-wq.github.io",
   projectId: "praxis-644cd",
   storageBucket: "praxis-644cd.firebasestorage.app",
   messagingSenderId: "121677105362",
@@ -494,16 +494,12 @@ function Praxis() {
   // ─── Haptic ──
   function haptic() { try { if (navigator.vibrate) navigator.vibrate(12); } catch(e) {} }
 
-  // ─── Auth actions with signInWithRedirect fallback ──
+  // ─── Auth actions — redirect flow (more reliable on GitHub Pages) ──
   async function signInWithGoogle() {
     try {
-      await fbAuth.signInWithPopup(googleProvider);
+      await fbAuth.signInWithRedirect(googleProvider);
     } catch(e) {
-      if (e.code === "auth/popup-blocked" || e.code === "auth/cancelled-popup-request") {
-        fbAuth.signInWithRedirect(googleProvider).catch(re => console.error("Redirect sign-in failed", re));
-      } else if (e.code !== "auth/popup-closed-by-user") {
-        console.error(e);
-      }
+      console.error("Sign-in failed", e);
     }
   }
   async function handleSignOut() {
